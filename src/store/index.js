@@ -1,12 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import getters from "./getters";
+import user from "./modules/user";
+import playlist from "./modules/playlist";
+import play from "./modules/play";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  getters: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+  modules: { user, playlist, play },
+  getters,
 });
