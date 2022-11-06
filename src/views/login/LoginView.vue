@@ -54,8 +54,8 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      username: "13979927696",
-      password: "Chenshuxu0409",
+      username: "",
+      password: "",
       passwordStatus: false,
       phoneRule: [
         {
