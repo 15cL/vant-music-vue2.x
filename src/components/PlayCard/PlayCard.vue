@@ -12,7 +12,7 @@
             {{ currentPlaySong.ar }}
           </div>
         </div>
-        <van-icon name="share" class="icon_size" />
+        <van-icon name="share" class="icon_size" @click="showShare = true" />
       </header>
 
       <!-- 中间部分 -->
@@ -106,6 +106,12 @@
       @closePop="popClose"
       :nextSongIndex="nextSongIndex"
     ></SongListTable>
+    <van-share-sheet
+      v-model="showShare"
+      title="立即分享给好友"
+      :options="options"
+      @select="onSelect"
+    />
   </div>
 </template>
 
@@ -125,6 +131,14 @@ export default {
       showListFlag: false,
       nextSongIndex: 0,
       time: "",
+      showShare: false,
+      options: [
+        { name: "微信", icon: "wechat" },
+        { name: "微博", icon: "weibo" },
+        { name: "复制链接", icon: "link" },
+        { name: "分享海报", icon: "poster" },
+        { name: "二维码", icon: "qrcode" },
+      ],
     };
   },
   components: {
@@ -164,7 +178,10 @@ export default {
   methods: {
     ...mapMutations(["play/playPause", "play/setCurrentPlaySong"]),
     ...mapActions(["play/getPlayUrl", "play/getSongDetail"]),
-
+    onSelect(option) {
+      this.$toast(option.name);
+      this.showShare = false;
+    },
     // 开关
     switchPlay() {
       this.$store.commit("play/switchPlayer");

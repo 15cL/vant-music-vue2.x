@@ -5,8 +5,12 @@ let cookie =
 
 // 登录
 export function login(data) {
+  let url = "/login/cellphone";
+  if (process.env.VUE_APP_ENV === "pro") {
+    url = process.env.VUE_APP_BASE_URL + "/login/cellphone";
+  }
   return request({
-    url: "/login/cellphone",
+    url,
     method: "post",
     data,
     cookie,
@@ -49,6 +53,14 @@ export function getUserInfoDetail() {
 export function getPlayList(id) {
   return request({
     url: "user/playlist?uid=" + id,
+    method: "get",
+  });
+}
+
+// 发送验证码
+export function getYzm(phone) {
+  return request({
+    url: "/captcha/sent?phone=" + phone,
     method: "get",
   });
 }

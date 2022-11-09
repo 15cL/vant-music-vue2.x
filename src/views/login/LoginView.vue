@@ -24,6 +24,7 @@
             :rules="phoneRule"
           />
           <van-field
+            v-if="fs_yzm"
             v-model="password"
             label="密码"
             left-icon="orders-o"
@@ -34,6 +35,19 @@
             autosize
           >
           </van-field>
+          <div class="yzm_input" v-else>
+            <van-field
+              v-model="Yzm"
+              left-icon="orders-o"
+              label="验证码"
+              placeholder="请输入验证码"
+              :type="text"
+            >
+            </van-field>
+            <van-button style="width: 10rem" @click="getYzm(username)"
+              >发送验证码</van-button
+            >
+          </div>
         </van-cell-group>
         <div style="margin: 2rem">
           <van-button
@@ -44,6 +58,11 @@
             >登录</van-button
           >
         </div>
+        <a
+          style="position: absolute; right: 2rem"
+          @click="fs_yzm = !fs_yzm"
+          v-text="fs_yzm ? '验证码登录' : '密码登录'"
+        ></a>
       </van-form>
     </div>
   </div>
@@ -54,9 +73,10 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      username: "13979927696",
-      password: "Chenshuxu0409",
+      username: "",
+      password: "",
       passwordStatus: false,
+      fs_yzm: true,
       phoneRule: [
         {
           // 是否必填
@@ -79,8 +99,13 @@ export default {
       ],
     };
   },
+  async created() {
+    console.log(process.env.VUE_APP_BASE_URL);
+    let res = await this["playlist/getJingPingList"];
+    console.log(res);
+  },
   methods: {
-    ...mapActions(["user/login"]),
+    ...mapActions(["user/login", "playlist/getJingPingList", "user/getYzm"]),
     backBtn() {
       this.$router.go(-1);
     },
@@ -101,6 +126,10 @@ export default {
         }
       }
     },
+    getYzm(phone) {
+      console.log(phone);
+      this["user/getYzm"](JSON.stringify(phone));
+    },
   },
 };
 </script>
@@ -113,6 +142,9 @@ export default {
     justify-content: center;
     .van-form {
       width: 94%;
+      .yzm_input {
+        display: flex;
+      }
     }
   }
 }

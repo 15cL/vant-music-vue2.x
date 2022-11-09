@@ -15,3 +15,16 @@ export function getAllPlaySong(id) {
     method: "get",
   });
 }
+
+// 获取精品歌单
+
+export function getJingPingList() {
+  let url = "/top/artists";
+  if (process.env.VUE_APP_ENV === "pro") {
+    url = process.env.VUE_APP_BASE_URL + "/top/artists";
+  }
+  return request({
+    url,
+    method: "get",
+  });
+}

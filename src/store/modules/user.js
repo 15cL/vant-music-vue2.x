@@ -1,5 +1,5 @@
 import { getToken, setToken, setTimeStamp, removeToken } from "@/utill/auth";
-import { login, logOut, getUserInfo, getPlayList } from "@/api/user";
+import { login, logOut, getUserInfo, getPlayList, getYzm } from "@/api/user";
 import { playlistClassify } from "@/utill/playlistClassify";
 
 const state = {
@@ -48,7 +48,10 @@ const actions = {
       context.commit("setId", id); //设置用户id
     }
   },
-
+  async getYzm(phone) {
+    let res = await getYzm(phone);
+    console.log(res);
+  },
   //登出
   async logOut(context) {
     await logOut();

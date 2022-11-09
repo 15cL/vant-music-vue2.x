@@ -114,6 +114,7 @@ export default {
   async created() {
     this.myList = window.sessionStorage.getItem("myList") || null;
     let id = sessionStorage.getItem("UserId");
+    this.$store.dispatch("playlist/getJingPingList");
     console.log(id);
     if (id) {
       this["user/getUserInfo"](id);

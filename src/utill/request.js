@@ -7,13 +7,17 @@ const timeOut = 3600; // 定义超时时间
 const instance = axios.create({
   baseURL: "/api",
   timeout: 3000,
+  withCredentials: true,
 });
-axios.defaults.withCredentials = true;
-
+// axios.defaults. = true;
+import qs from "qs";
 // axios拦截器
 // 请求拦截
 instance.interceptors.request.use(
   (config) => {
+    if (config.method === "post") {
+      config.data = qs.stringify(config.data);
+    }
     if (store.getters.token) {
       if (IsCheckTimeOut()) {
         // 如果它为true表示 过期了 // token没用了 因为超时了
@@ -26,6 +30,17 @@ instance.interceptors.request.use(
   },
   (err) => {
     return Promise.reject(err);
+  }
+);
+// 添加响应拦截器
+instance.interceptors.response.use(
+  function (response) {
+    // 对响应数据做点什么
+    return response;
+  },
+  function (error) {
+    // 对响应错误做点什么
+    return Promise.reject(error);
   }
 );
 
