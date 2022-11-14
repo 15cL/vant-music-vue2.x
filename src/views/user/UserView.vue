@@ -1,6 +1,16 @@
 <template>
   <div class="user_page">
-    <div ref="user_wrap" :class="showPlayerFlag ? 'wrapper' : 'active'">
+    <div
+      ref="user_wrap"
+      :style="[
+        { overflow: 'hidden' },
+        {
+          height: currentPlaySong.id
+            ? 'calc(100vh - 7.5rem)'
+            : 'calc(100vh - 2.65rem)',
+        },
+      ]"
+    >
       <div class="move">
         <header>
           <div class="title" @click="showPopup">
@@ -83,7 +93,10 @@
           v-model="show"
           v-if="token"
           position="bottom"
-          :style="{ height: '30%', width: '100%', padding: '1rem' }"
+          :style="{
+            width: '100%',
+            padding: '2rem 1rem',
+          }"
         >
           <van-button block type="info" @click="logOut">退出登录</van-button>
         </van-popup>
@@ -103,49 +116,49 @@ export default {
     return {
       show: false,
       imgUrl: require("../../assets/pic/login_lo.png"),
-      myList: {},
+      myList: "",
       user_wrap: null,
-      zjList: {},
     };
   },
   computed: {
-    ...mapGetters(["token", "userInfo", "showPlayerFlag"]),
+    ...mapGetters(["token", "userInfo", "showPlayerFlag", "currentPlaySong"]),
   },
-  async created() {
-    this.myList = window.sessionStorage.getItem("myList") || null;
-    let id = sessionStorage.getItem("UserId");
-    this.$store.dispatch("playlist/getJingPingList");
-    console.log(id);
-    if (id) {
-      this["user/getUserInfo"](id);
-      let list = await this["user/getPlayList"](id);
-      if (list) {
-        this.zjList = list;
-      }
-      console.log("myList", this.zjList);
-    }
-    this.myList = this.myList ? this.myList : this.zjList;
-    window.sessionStorage.setItem("myList", this.myList);
-  },
-  watch: {
-    zjList(n) {
-      this.myList = n;
-    },
-  },
-  mounted() {
-    setTimeout(() => {
-      if (this.$refs.user_wrap) {
-        this.user_wrap = window.BScroll(this.$refs.user_wrap, {
-          click: true,
-          scrollY: true,
-        });
-        console.log("------->", this.user_wrap);
-      }
-    }, 50);
+  created() {
+    this.getMyList();
+    console.log("22222", this.currentPlaySong);
   },
   methods: {
     ...mapActions(["user/getUserInfo", "user/getPlayList"]),
+    // 获取我的歌单
+    async getMyList() {
+      let id = sessionStorage.getItem("UserId");
+      this.$store.dispatch("playlist/getJingPingList");
+      console.log(id);
+      if (id) {
+        this["user/getUserInfo"](id);
+        let list = await this["user/getPlayList"](id);
+        if (list) {
+          this.myList = list;
+          this.$nextTick(() => {
+            this._initScroll();
+          });
+        }
 
+        console.log("myList", this.myList);
+      }
+    },
+    _initScroll() {
+      if (!this.user_wrap) {
+        this.user_wrap = window.BScroll(this.$refs.user_wrap, {
+          click: true,
+          scrollY: true,
+          observeDOM: true,
+        });
+        console.log(this.user_wrap.options);
+      } else {
+        this.user_wrap.refresh();
+      }
+    },
     // 跳转歌单页面
     toList(id) {
       this.$router.push({ name: "listDetail", query: { listId: id } });
@@ -174,20 +187,10 @@ export default {
 
 <style lang="scss">
 .user_page {
-  height: calc(100vh - 1.65rem);
+  height: calc(100vh - 2.15rem);
   margin-top: 0.5rem;
-  .wrapper {
-    height: calc(100vh - 2.65rem);
-    overflow: hidden;
-  }
-  .active {
-    height: calc(100vh - 7.65rem);
-    overflow: hidden;
-  }
   .move {
     width: 100%;
-    min-height: 100%;
-
     header {
       display: flex;
       justify-content: center;

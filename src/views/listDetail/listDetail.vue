@@ -9,50 +9,59 @@
       <span>歌单</span>
       <van-icon name="search" />
     </div>
-    <div ref="user_wrap" :class="showPlayerFlag ? 'wrapper' : 'activeWrap'">
-      <div class="wrap" ref="niu">
-        <div class="content">
-          <header>
-            <div class="list_detail">
-              <img class="img_style" :src="listDetail.coverImgUrl" />
-              <div class="detail_right">
-                <h3 class="list_title">{{ listDetail.name }}</h3>
-                <h5 class="list_creator">
-                  {{ listDetail.creator.nickname }}
-                  <van-icon name="arrow" />
-                </h5>
-                <h6 class="list_des">
-                  {{ listDetail.description }}
-                </h6>
-              </div>
+    <div
+      ref="user_wrap"
+      class="wrapper"
+      :style="[
+        { overflow: 'hidden' },
+        {
+          height: currentPlaySong.id
+            ? 'calc(100vh - 8.8rem)'
+            : 'calc(100vh - 4.5rem)',
+        },
+      ]"
+    >
+      <div class="content" ref="niu">
+        <header>
+          <div class="list_detail">
+            <img class="img_style" :src="listDetail.coverImgUrl" />
+            <div class="detail_right">
+              <h3 class="list_title">{{ listDetail.name }}</h3>
+              <h5 class="list_creator">
+                {{ listDetail.creator.nickname }}
+                <van-icon name="arrow" />
+              </h5>
+              <h6 class="list_des">
+                {{ listDetail.description }}
+              </h6>
             </div>
-          </header>
-          <section>
-            <ul>
-              <li
-                v-for="(song, index) in allSong"
-                :key="song.al.id"
-                @click="toPlay(song.id, song, index)"
-              >
-                <span v-if="tapFlag !== index">{{ index + 1 }}</span>
-                <span
-                  v-else
-                  class="iconfont icon-bar-chart-fill"
-                  style="color: orange; font-size: 1.3rem"
-                ></span>
-                <div class="zj_text">
-                  <h3 :class="tapFlag == index ? 'active' : ''">
-                    {{ song.name }}
-                  </h3>
-                  <div class="gray csl">
-                    <span>{{ song.ar }}</span> - {{ song.al.name }}
-                  </div>
+          </div>
+        </header>
+        <section>
+          <ul>
+            <li
+              v-for="(song, index) in allSong"
+              :key="song.al.id"
+              @click="toPlay(song.id, song, index)"
+            >
+              <span v-if="tapFlag !== index">{{ index + 1 }}</span>
+              <span
+                v-else
+                class="iconfont icon-bar-chart-fill"
+                style="color: orange; font-size: 1.3rem"
+              ></span>
+              <div class="zj_text">
+                <h3 :class="tapFlag == index ? 'active' : ''">
+                  {{ song.name }}
+                </h3>
+                <div class="gray csl">
+                  <span>{{ song.ar }}</span> - {{ song.al.name }}
                 </div>
-                <span class="iconfont icon-yuandiancaidan"></span>
-              </li>
-            </ul>
-          </section>
-        </div>
+              </div>
+              <span class="iconfont icon-yuandiancaidan"></span>
+            </li>
+          </ul>
+        </section>
       </div>
     </div>
   </div>
@@ -68,6 +77,7 @@ export default {
       lists: [],
       allSong: [],
       tapFlag: null,
+      user_wrap: "",
     };
   },
   async created() {
@@ -76,18 +86,11 @@ export default {
     this.getPlayListDetail(id); //获取歌单详情
 
     let list = await this.getAllPlaySong(id); //歌单所有歌曲
+    this.$nextTick(() => {
+      this._initScroll();
+    });
     this.tapFlag = list.findIndex((v) => v.id == this.currentPlaySong.id); //定位当前播放歌曲
-  },
-  mounted() {
-    setTimeout(() => {
-      if (this.$refs.user_wrap) {
-        this.user_wrap = window.BScroll(this.$refs.user_wrap, {
-          click: true,
-          scrollY: true,
-        });
-        console.log("------->", this.user_wrap);
-      }
-    }, 50);
+    console.log(this.currentPlaySong.id);
   },
   computed: {
     ...mapGetters(["currentPlaySong", "showPlayerFlag"]),
@@ -107,6 +110,19 @@ export default {
     ...mapMutations(["play/setCurrentPlaySong", "play/setCurrentPlayList"]),
     backBtn() {
       this.$router.go(-1);
+    },
+
+    _initScroll() {
+      if (!this.user_wrap) {
+        this.user_wrap = window.BScroll(this.$refs.user_wrap, {
+          click: true,
+          scrollY: true,
+          observeDOM: true,
+        });
+        console.log(this.user_wrap);
+      } else {
+        this.user_wrap.refresh();
+      }
     },
     // 获取歌单详情
     async getPlayListDetail(id) {
@@ -168,12 +184,6 @@ export default {
     background-color: rgb(104, 104, 97);
   }
   .wrapper {
-    height: calc(100vh - 3.9375rem);
-    margin-top: -0.1rem;
-    overflow: hidden;
-  }
-  .activeWrap {
-    height: calc(100vh - 8.9375rem);
     margin-top: -0.1rem;
     overflow: hidden;
   }

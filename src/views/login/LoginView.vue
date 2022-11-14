@@ -99,11 +99,6 @@ export default {
       ],
     };
   },
-  async created() {
-    console.log(process.env.VUE_APP_BASE_URL);
-    let res = await this["playlist/getJingPingList"];
-    console.log(res);
-  },
   methods: {
     ...mapActions(["user/login", "playlist/getJingPingList", "user/getYzm"]),
     backBtn() {

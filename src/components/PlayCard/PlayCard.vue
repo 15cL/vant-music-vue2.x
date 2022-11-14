@@ -16,7 +16,7 @@
       </header>
 
       <!-- 中间部分 -->
-      <section>
+      <section v-if="currentPlaySong.al.picUrl">
         <img
           :src="currentPlaySong.al.picUrl"
           :style="
@@ -72,12 +72,14 @@
         </div>
       </footer>
     </div>
-
     <div class="play_little" v-else>
       <div class="botm_play">
-        <div class="play_left" @click="switchPlay">
+        <div
+          class="play_left"
+          @click="switchPlay"
+          v-if="currentPlaySong.al.picUrl"
+        >
           <img
-            v-if="currentPlaySong.al.picUrl"
             :src="currentPlaySong.al.picUrl"
             :style="
               !showPlayerFlag ? { transform: `rotate(${rotateVulue}deg)` } : ''
@@ -182,6 +184,7 @@ export default {
       this.$toast(option.name);
       this.showShare = false;
     },
+
     // 开关
     switchPlay() {
       this.$store.commit("play/switchPlayer");

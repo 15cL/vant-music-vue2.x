@@ -8,7 +8,7 @@
         :key="index"
         v-text="title"
         :to="toHref[index]"
-        @click.native="flag = index"
+        @click.native="navTo(index)"
       ></router-link>
     </header>
   </div>
@@ -18,12 +18,20 @@
 export default {
   data() {
     return {
-      titles: ["发现", "我的", "推荐", "搜索"],
+      titles: ["发现", "我的", "排行榜", "搜索"],
       flag: 1,
-      toHref: ["/discover", "/user", "/recommend", "/search"],
+      toHref: ["/discover", "/user", "/rank", "/search"],
     };
   },
-  methods: {},
+  created() {
+    this.flag = window.sessionStorage.getItem("navId") || "1";
+  },
+  methods: {
+    navTo(index) {
+      this.flag = index;
+      window.sessionStorage.setItem("navId", index);
+    },
+  },
 };
 </script>
 

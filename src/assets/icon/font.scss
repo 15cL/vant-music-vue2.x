@@ -1,7 +1,7 @@
 @font-face {
   font-family:"iconfont";
   /* Project id 3747197 */
-  src: url('//at.alicdn.com/t/c/font_3747197_cd2oxmbvh05.woff2?t=1667633710538') format('woff2'), url('//at.alicdn.com/t/c/font_3747197_cd2oxmbvh05.woff?t=1667633710538') format('woff'), url('//at.alicdn.com/t/c/font_3747197_cd2oxmbvh05.ttf?t=1667633710538') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_3747197_fajk6sr1hw.woff2?t=1668308324442') format('woff2'), url('//at.alicdn.com/t/c/font_3747197_fajk6sr1hw.woff?t=1668308324442') format('woff'), url('//at.alicdn.com/t/c/font_3747197_fajk6sr1hw.ttf?t=1668308324442') format('truetype');
 }
 .iconfont {
   font-family:"iconfont" !important;
@@ -9,6 +9,18 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.icon-rili:before {
+  content:"\e637";
+}
+.icon-gedan:before {
+  content:"\e61b";
+}
+.icon-book-full:before {
+  content:"\e895";
+}
+.icon-a-tupianyihuifu-10:before {
+  content:"\e603";
 }
 .icon-bar-chart-fill:before {
   content:"\e611";

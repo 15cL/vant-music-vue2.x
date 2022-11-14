@@ -44,7 +44,7 @@ export default {
   computed: {
     ...mapGetters(["showPlayerFlag", "playUrl"]),
     flag() {
-      let okUrl = ["/search", "/recommend", "/user", "/discover"];
+      let okUrl = ["/search", "/rank", "/user", "/discover"];
       return okUrl.indexOf(this.$route.path) == -1 ? false : true;
     },
   },

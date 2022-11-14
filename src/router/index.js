@@ -25,12 +25,17 @@ const routes = [
     component: () => import("@/views/discover/DiscoverView.vue"),
   },
   {
-    path: "/recommend",
-    name: "recommend",
+    path: "/dailySongs",
+    name: "dailySongs",
+    component: () => import("@/views/dailySongs/dailySongs.vue"),
+  },
+  {
+    path: "/rank",
+    name: "rank",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import("@/views/recommed/RecView.vue"),
+    component: () => import("@/views/rank/RankView.vue"),
   },
   {
     path: "/search",

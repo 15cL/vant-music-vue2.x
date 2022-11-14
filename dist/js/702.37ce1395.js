@@ -1,2 +1,0 @@
-"use strict";(self["webpackChunkvue_littlefivemusic"]=self["webpackChunkvue_littlefivemusic"]||[]).push([[702],{702:function(e,u,t){t.r(u),t.d(u,{default:function(){return r}});var i=function(){var e=this,u=e._self._c;return u("div",[e._v("推荐")])},l=[],n={},s=n,c=t(1001),f=(0,c.Z)(s,i,l,!1,null,"9536169a",null),r=f.exports}}]);
-//# sourceMappingURL=702.37ce1395.js.map
