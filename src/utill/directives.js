@@ -9,7 +9,6 @@ Vue.directive("pin", {
       throttleTime = 2000;
     }
     let cbFun;
-    console.log("hhhh", el);
     el.addEventListener(
       "click",
       (event) => {

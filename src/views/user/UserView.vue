@@ -125,7 +125,6 @@ export default {
   },
   created() {
     this.getMyList();
-    console.log("22222", this.currentPlaySong);
   },
   methods: {
     ...mapActions(["user/getUserInfo", "user/getPlayList"]),
@@ -133,7 +132,6 @@ export default {
     async getMyList() {
       let id = sessionStorage.getItem("UserId");
       this.$store.dispatch("playlist/getJingPingList");
-      console.log(id);
       if (id) {
         this["user/getUserInfo"](id);
         let list = await this["user/getPlayList"](id);
@@ -143,8 +141,6 @@ export default {
             this._initScroll();
           });
         }
-
-        console.log("myList", this.myList);
       }
     },
     _initScroll() {
@@ -154,7 +150,6 @@ export default {
           scrollY: true,
           observeDOM: true,
         });
-        console.log(this.user_wrap.options);
       } else {
         this.user_wrap.refresh();
       }

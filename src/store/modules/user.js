@@ -44,13 +44,11 @@ const actions = {
       setTimeStamp(); // 将当前的最新时间写入缓存W
 
       let id = result.data.account.id;
-      console.log("loginId", id);
       context.commit("setId", id); //设置用户id
     }
   },
   async getYzm(phone) {
-    let res = await getYzm(phone);
-    console.log(res);
+    return await getYzm(phone);
   },
   //登出
   async logOut(context) {
@@ -64,7 +62,6 @@ const actions = {
   // 获取用户信息
   async getUserInfo(context, id) {
     let res = await getUserInfo(id);
-    console.log("getUserInfo", res.data.data.profile);
     context.commit("setUserInfo", res.data.data.profile);
   },
 

@@ -115,14 +115,13 @@ export default {
           await this["user/login"]({ phone: user, password: pwd });
           this.$router.push("/");
         } catch (error) {
-          console.log(error);
+          return;
         } finally {
           loading.clear();
         }
       }
     },
     getYzm(phone) {
-      console.log(phone);
       this["user/getYzm"](JSON.stringify(phone));
     },
   },

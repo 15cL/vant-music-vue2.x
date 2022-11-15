@@ -136,7 +136,6 @@ export default {
     this.$nextTick(() => {
       this._initScroll();
     });
-    console.log(this.list);
     let rrr = await this.$store.dispatch("discover/getNewSong", 0);
     rrr.data.data.map((v, i) => {
       if (i < 9) {
@@ -145,7 +144,6 @@ export default {
         this.newSongs.push(v);
       }
     });
-    console.log("11111", this.newSongs);
     let hhh = await this.$store.dispatch("discover/getNewDie", 9);
     hhh.data.monthData.map((v, i) => {
       if (i < 9) {
@@ -153,13 +151,11 @@ export default {
         this.newDies.push(v);
       }
     });
-    console.log(this.newDies);
   },
   methods: {
     ...mapMutations(["play/setCurrentPlaySong"]),
     ...mapActions(["play/getSongDetail", "play/getPlayUrl"]),
     async toPlay(id, song) {
-      console.log(id, song);
       if (Array.isArray(song.ar)) {
         song.ar = SingerFormate(song.ar);
       }
@@ -179,7 +175,6 @@ export default {
           scrollX: true,
           observeDOM: true,
         });
-        console.log(this.user_wrap);
       } else {
         this.user_wrap.refresh();
       }
@@ -189,7 +184,6 @@ export default {
           scrollX: true,
           observeDOM: true,
         });
-        console.log(this.new_wrap);
       } else {
         this.new_wrap.refresh();
       }

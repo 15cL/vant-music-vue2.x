@@ -18,7 +18,6 @@ const mutations = {
 
   // 清空搜索历史记录
   clearSearchHistory(state) {
-    console.log("hhh");
     state.keys_history = "";
     window.localStorage.removeItem("keywords");
     return;

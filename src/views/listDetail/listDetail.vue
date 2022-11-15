@@ -81,7 +81,6 @@ export default {
     };
   },
   async created() {
-    console.log(this.$route.query.listId);
     let id = this.$route.query.listId;
     this.getPlayListDetail(id); //获取歌单详情
 
@@ -90,7 +89,6 @@ export default {
       this._initScroll();
     });
     this.tapFlag = list.findIndex((v) => v.id == this.currentPlaySong.id); //定位当前播放歌曲
-    console.log(this.currentPlaySong.id);
   },
   computed: {
     ...mapGetters(["currentPlaySong", "showPlayerFlag"]),
@@ -119,7 +117,6 @@ export default {
           scrollY: true,
           observeDOM: true,
         });
-        console.log(this.user_wrap);
       } else {
         this.user_wrap.refresh();
       }
@@ -127,7 +124,6 @@ export default {
     // 获取歌单详情
     async getPlayListDetail(id) {
       let res = await this["playlist/getPlayListDetail"](id);
-      console.log("details", res);
       this.listDetail = res.data.playlist;
     },
 
@@ -151,7 +147,6 @@ export default {
     // 跳转播放页面
     async toPlay(id, song, index) {
       let useUrl = await this["play/getPlayUrl"](id); //获取歌曲url
-      console.log("useUrl", useUrl);
       if (!useUrl) {
         this.$toast("当前音乐无可用资源");
         return this.toPlay(

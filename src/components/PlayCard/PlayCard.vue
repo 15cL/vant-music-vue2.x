@@ -188,7 +188,6 @@ export default {
     // 开关
     switchPlay() {
       this.$store.commit("play/switchPlayer");
-      console.log("hhh");
     },
 
     // 播放类型
@@ -222,7 +221,6 @@ export default {
       if (this.indexIcon) {
         this.switchPlayStop(this.indexIcon); //暂停=>播放
       }
-      console.log(a, flag);
       let type = this.indexType ? this.indexType : 1; //手动切换,单曲循环 遵循 顺序播放
       let res = await switchSong(a, flag, type);
       if (res) {

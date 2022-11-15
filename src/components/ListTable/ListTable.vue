@@ -42,7 +42,6 @@ export default {
   props: ["title", "lists"],
   methods: {
     navToList(id) {
-      console.log("id", id);
       this.$router.push({ name: "listDetail", query: { listId: id } });
     },
   },

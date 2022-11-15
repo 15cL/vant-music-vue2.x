@@ -145,7 +145,6 @@ export default {
   },
   async created() {
     let aaa = await this.$store.dispatch("rank/getTopRank");
-    console.log(aaa.data);
     aaa.data.list.map((v, i) => {
       if (i < 4) {
         this.guanfangList.push(v);
@@ -161,7 +160,6 @@ export default {
         this.specialList.push(v);
       }
     });
-    console.log(this.guanfangList);
     this.$nextTick(() => {
       this._initScroll();
     });
@@ -174,7 +172,6 @@ export default {
           scrollX: true,
           observeDOM: true,
         });
-        console.log(this.nav_wrapper);
       } else {
         this.nav_wrapper.refresh();
       }
@@ -184,7 +181,6 @@ export default {
           scrollY: true,
           observeDOM: true,
         });
-        console.log(this.rank_wrapper);
       } else {
         this.rank_wrapper.refresh();
       }

@@ -21,7 +21,6 @@ const actions = {
   // 获取精品歌单
   async getJingPingList() {
     let res = await getJingPingList();
-    console.log(res);
     return res;
   },
 };

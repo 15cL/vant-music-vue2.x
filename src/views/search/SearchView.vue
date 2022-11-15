@@ -211,7 +211,6 @@ export default {
           scrollY: true,
           observeDOM: true,
         });
-        console.log(this.wrapper);
       } else {
         this.wrapper.refresh();
       }
@@ -260,7 +259,6 @@ export default {
         v.ar = SingerFormate(v.ar);
       });
       this.searchSongRes = ccc.data.result;
-      console.log(this.searchSongRes);
       this.tapFlag = this.searchSongRes.songs.findIndex(
         (v) => v.id == this.currentPlaySong.id
       ); //定位当前播放歌曲
@@ -268,7 +266,6 @@ export default {
 
     //加载余下
     async onLoad() {
-      console.log("jjjjj");
       this.offset = this.offset + 1;
       let data = { keywords: this.searchInput, type: 1, offset: this.offset };
       let ccc = await this["search/getSearchRes"](data);
@@ -283,7 +280,6 @@ export default {
     // 跳转播放页面
     async toPlay(id, song, index) {
       let useUrl = await this["play/getPlayUrl"](id); //获取歌曲url
-      console.log("useUrl", useUrl);
       if (!useUrl) {
         this.$toast("当前音乐无可用资源");
         return this.toPlay(

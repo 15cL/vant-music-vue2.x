@@ -21,7 +21,6 @@ const mutations = {
   // 设置播放歌曲音乐url
   setPlayUrl(state, url) {
     state.playUrl = url;
-    console.log("url", url);
   },
 
   //设置当前播放歌单
@@ -42,7 +41,6 @@ const actions = {
   async getSongDetail(context, ids) {
     let id = JSON.stringify(ids).replace(/\[|]/g, "");
     let res = await getSongDetail(id);
-    console.log("xiangqing", res);
     return res;
   },
 };

@@ -57,7 +57,6 @@ export default {
     onRefresh() {
       if (this.$route.path == "/user") {
         let id = localStorage.getItem("UserId");
-        console.log(id);
         this.$store.dispatch("user/getUserInfo", id);
         this.$store.dispatch("user/getPlayList", id);
         this.$store.dispatch("playlist/getPlayListDetail");
@@ -91,7 +90,6 @@ export default {
         this.$refs.play.src == this.playUrl;
         this.$refs.play.play();
       }
-      console.log("dadadadada", this.type);
       switchSong(1, true, this.type);
     },
 

@@ -78,7 +78,6 @@ export default {
     this.list.dailySongs.map((v) => {
       v.ar = SingerFormate(v.ar);
     });
-    console.log(ooo.data.data);
     this.$nextTick(() => {
       this._initScroll();
     });
@@ -105,15 +104,13 @@ export default {
           scrollY: true,
           observeDOM: true,
         });
-        console.log(this.user_wrap);
       } else {
         this.user_wrap.refresh();
       }
     },
     // 跳转播放页面
     async toPlay(id, song, index) {
-      let useUrl = await this["play/getPlayUrl"](id); //获取歌曲url
-      console.log("useUrl", useUrl);
+      await this["play/getPlayUrl"](id); //获取歌曲url
       this.tapFlag = index;
       song.index = index;
       // this.$router.push({ name: "songDetail", query: { songId: id } });
