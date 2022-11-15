@@ -35,7 +35,11 @@
               <div class="rank_content">
                 <img :src="rank.coverImgUrl" alt="" style="width: 6rem" />
                 <div class="text">
-                  <p v-for="(text, index) in rank.tracks" :key="index">
+                  <p
+                    v-for="(text, index) in rank.tracks"
+                    :key="index"
+                    class="csl"
+                  >
                     <span>{{ index + 1 }} {{ text.first }}</span> -
                     {{ text.second }}
                   </p>

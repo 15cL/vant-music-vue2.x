@@ -52,7 +52,7 @@ export default {
       return okUrl.indexOf(this.$route.path) == -1 ? false : true;
     },
   },
-
+  created() {},
   methods: {
     onRefresh() {
       if (this.$route.path == "/user") {

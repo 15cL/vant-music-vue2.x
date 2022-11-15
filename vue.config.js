@@ -19,7 +19,7 @@ module.exports = defineConfig({
         changeOrigin: true,
         ws: true,
         pathRewrite: {
-          "^/api": "",
+          "^/api": "http://cloud-music.pl-fe.cn/",
         },
       },
     },

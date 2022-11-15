@@ -4,20 +4,26 @@ import { getTimeStamp } from "@/utill/auth";
 
 const timeOut = 3600; // 定义超时时间
 
+let baseUrl = "";
+switch (process.env.NODE_ENV) {
+  case "development":
+    baseUrl = "/api"; //开发环境url
+    break;
+  case "production":
+    baseUrl = "http://cloud-music.pl-fe.cn/"; //生产环境url
+    break;
+}
+
 const instance = axios.create({
-  baseURL: "/api",
+  baseURL: baseUrl,
   timeout: 3000,
-  withCredentials: true,
 });
-// axios.defaults. = true;
-import qs from "qs";
+axios.defaults.withCredentials = true;
+
 // axios拦截器
 // 请求拦截
 instance.interceptors.request.use(
   (config) => {
-    if (config.method === "post") {
-      config.data = qs.stringify(config.data);
-    }
     if (store.getters.token) {
       if (IsCheckTimeOut()) {
         // 如果它为true表示 过期了 // token没用了 因为超时了
@@ -30,17 +36,6 @@ instance.interceptors.request.use(
   },
   (err) => {
     return Promise.reject(err);
-  }
-);
-// 添加响应拦截器
-instance.interceptors.response.use(
-  function (response) {
-    // 对响应数据做点什么
-    return response;
-  },
-  function (error) {
-    // 对响应错误做点什么
-    return Promise.reject(error);
   }
 );
 
