@@ -42,7 +42,6 @@ const actions = {
   async getSongDetail(context, ids) {
     let id = JSON.stringify(ids).replace(/\[|]/g, "");
     let res = await getSongDetail(id);
-    console.log("xiangqing", res);
     return res;
   },
 };

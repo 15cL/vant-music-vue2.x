@@ -5,7 +5,7 @@ import { getTimeStamp } from "@/utill/auth";
 const timeOut = 3600; // 定义超时时间
 
 const instance = axios.create({
-  baseURL: "/api",
+  baseURL: process.env.API_HOST,
   timeout: 3000,
 });
 axios.defaults.withCredentials = true;
