@@ -6,10 +6,10 @@ import playlist from "./modules/playlist";
 import play from "./modules/play";
 import discover from "./modules/discover";
 import rank from "./modules/rank";
-
+import search from "./modules/search";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  modules: { user, playlist, play, discover, rank },
+  modules: { user, playlist, play, discover, rank, search },
   getters,
 });

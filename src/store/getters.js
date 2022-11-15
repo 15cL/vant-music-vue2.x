@@ -6,5 +6,6 @@ const getters = {
   currentPlayList: (state) => state.play.currentPlayList, //currentPlaySong的映射
   playUrl: (state) => state.play.playUrl, //playUrl的映射
   play: (state) => state.play.play, //play的映射
+  keys_history: (state) => state.search.keys_history,
 };
 export default getters;

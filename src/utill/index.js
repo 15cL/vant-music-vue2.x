@@ -13,6 +13,9 @@ export async function switchSong(a, flag, type) {
     songIndex = store.getters.currentPlaySong.index;
   }
   console.log(songIndex);
+  if (songIndex >= store.getters.currentPlayList.length) {
+    songIndex = 0;
+  }
   let song = store.getters.currentPlayList[songIndex];
   song.index = songIndex;
   let id = song.id;

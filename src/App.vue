@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <NavTab v-if="flag"></NavTab>
-    <router-view />
+    <keep-alive>
+      <router-view />
+    </keep-alive>
     <keep-alive>
       <PlayCard
         @playPause="playPause"
@@ -11,14 +13,16 @@
         @tapType="tapType"
       ></PlayCard>
     </keep-alive>
-    <audio
-      ref="play"
-      :src="playUrl"
-      autoplay
-      @canplay="getDuration"
-      @timeupdate="updateTimer"
-      @ended="nextSong"
-    ></audio>
+    <keep-alive>
+      <audio
+        ref="play"
+        :src="playUrl"
+        autoplay
+        @canplay="getDuration"
+        @timeupdate="updateTimer"
+        @ended="nextSong"
+      ></audio>
+    </keep-alive>
   </div>
 </template>
 
@@ -44,7 +48,7 @@ export default {
   computed: {
     ...mapGetters(["showPlayerFlag", "playUrl"]),
     flag() {
-      let okUrl = ["/search", "/rank", "/user", "/discover"];
+      let okUrl = ["/rank", "/user", "/discover"];
       return okUrl.indexOf(this.$route.path) == -1 ? false : true;
     },
   },

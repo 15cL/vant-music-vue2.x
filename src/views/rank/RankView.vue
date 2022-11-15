@@ -220,7 +220,7 @@ export default {
     }
   }
   section {
-    height: calc(100vh - 12rem);
+    height: calc(100vh - 8.5rem);
     overflow: hidden;
     padding: 1rem;
 

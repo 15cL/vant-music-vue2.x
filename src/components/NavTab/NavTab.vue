@@ -28,6 +28,9 @@ export default {
   },
   methods: {
     navTo(index) {
+      if (index == 3) {
+        return;
+      }
       this.flag = index;
       window.sessionStorage.setItem("navId", index);
     },
