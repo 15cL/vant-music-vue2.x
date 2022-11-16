@@ -15,6 +15,9 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import("@/views/user/UserView.vue"),
+    meta: {
+      keepAlive: false, // 不需要缓存
+    },
   },
   {
     path: "/discover",
@@ -23,11 +26,17 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import("@/views/discover/DiscoverView.vue"),
+    meta: {
+      keepAlive: false, // 不需要缓存
+    },
   },
   {
     path: "/dailySongs",
     name: "dailySongs",
     component: () => import("@/views/dailySongs/dailySongs.vue"),
+    meta: {
+      keepAlive: true, // 不需要缓存
+    },
   },
   {
     path: "/rank",
@@ -36,6 +45,9 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import("@/views/rank/RankView.vue"),
+    meta: {
+      keepAlive: false, // 不需要缓存
+    },
   },
   {
     path: "/search",
@@ -44,6 +56,9 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import("@/views/search/SearchView.vue"),
+    meta: {
+      keepAlive: true, // 需要缓存
+    },
   },
   {
     path: "/login",
@@ -52,6 +67,9 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import("@/views/login/LoginView.vue"),
+    meta: {
+      keepAlive: false, // 不需要缓存
+    },
   },
   {
     path: "/listDetail",

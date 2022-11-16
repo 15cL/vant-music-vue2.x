@@ -123,6 +123,7 @@
               <img
                 :src="list.coverImgUrl"
                 style="width: 7rem; border-radius: 1rem"
+                @load="imageLoad"
               />
               <p>{{ list.updateFrequency }}</p>
             </li>
@@ -145,6 +146,7 @@ export default {
       earthList: [],
       langList: [],
       specialList: [],
+      rank_wrapper: null,
     };
   },
   async created() {
@@ -169,6 +171,9 @@ export default {
     });
   },
   methods: {
+    imageLoad() {
+      this.rank_wrapper.refresh();
+    },
     _initScroll() {
       if (!this.nav_wrapper) {
         this.nav_wrapper = window.BScroll(this.$refs.nav_wrapper, {
@@ -177,29 +182,14 @@ export default {
           observeDOM: true,
         });
       }
-      this.$refs.nav_wrapper.addEventListener(
-        "DOMSubtreeModified",
-        function () {
-          this.nav_wrapper.refresh();
-        },
-        false
-      );
       if (!this.rank_wrapper) {
         this.rank_wrapper = window.BScroll(this.$refs.rank_wrapper, {
           click: true,
           scrollY: true,
           observeDOM: true,
         });
+        console.log(this.rank_wrapper);
       }
-
-      //监听dom树改变进行刷新
-      this.$refs.rank_wrapper.addEventListener(
-        "DOMSubtreeModified",
-        function () {
-          this.rank_wrapper.refresh();
-        },
-        false
-      );
     },
     // 跳转歌单页面
     toList(id) {
@@ -267,6 +257,7 @@ export default {
                 justify-content: center;
                 margin-left: 1rem;
                 p {
+                  width: 13rem;
                   padding: 0.2rem;
                   span {
                     font-weight: bold;

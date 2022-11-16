@@ -217,14 +217,6 @@ export default {
         });
         console.log(this.wrapper);
       }
-      //监听dom树改变进行刷新
-      this.$refs.wrapper.addEventListener(
-        "DOMSubtreeModified",
-        function () {
-          this.$refs.wrapper.refresh();
-        },
-        false
-      );
     },
     // 返回
     backBtn(val) {
