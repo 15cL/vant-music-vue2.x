@@ -161,7 +161,8 @@ export default {
         } catch (error) {
           if (!this.fs_yzm) {
             this.msgYzm = "验证码错误";
-            console.log(this.msgYzm);
+          } else {
+            this.msgYzm = "账号或密码错误";
           }
           return;
         } finally {
