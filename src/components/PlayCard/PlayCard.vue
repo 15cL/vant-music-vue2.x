@@ -32,7 +32,7 @@
             @change="onChange"
             v-model="time"
             active-color="rgb(224, 214, 74)"
-            style="width: 69vw"
+            style="width: 69vw; margin: 0 0.7rem"
           >
             <template #button>
               <div class="custom-button"></div>
@@ -277,8 +277,8 @@ export default {
       text-align: center;
       padding-top: 4rem;
       img {
-        width: 60vw;
-        height: 27vh;
+        width: 15.45rem;
+        height: 15.45rem;
         border: 0.065rem solid gainsboro;
         border-radius: 60vw;
       }

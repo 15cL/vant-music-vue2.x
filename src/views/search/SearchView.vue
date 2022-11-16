@@ -165,6 +165,10 @@ export default {
     keys_history(n) {
       this.key_history = n;
     },
+    wrapper() {
+      console.log("hhh");
+      this.wrapper.refresh();
+    },
   },
   async activated() {
     this.$refs.input_van.focus();
@@ -211,9 +215,16 @@ export default {
           scrollY: true,
           observeDOM: true,
         });
-      } else {
-        this.wrapper.refresh();
+        console.log(this.wrapper);
       }
+      //监听dom树改变进行刷新
+      this.$refs.wrapper.addEventListener(
+        "DOMSubtreeModified",
+        function () {
+          this.$refs.wrapper.refresh();
+        },
+        false
+      );
     },
     // 返回
     backBtn(val) {

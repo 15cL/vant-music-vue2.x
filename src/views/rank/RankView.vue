@@ -176,18 +176,30 @@ export default {
           scrollX: true,
           observeDOM: true,
         });
-      } else {
-        this.nav_wrapper.refresh();
       }
+      this.$refs.nav_wrapper.addEventListener(
+        "DOMSubtreeModified",
+        function () {
+          this.nav_wrapper.refresh();
+        },
+        false
+      );
       if (!this.rank_wrapper) {
         this.rank_wrapper = window.BScroll(this.$refs.rank_wrapper, {
           click: true,
           scrollY: true,
           observeDOM: true,
         });
-      } else {
-        this.rank_wrapper.refresh();
       }
+
+      //监听dom树改变进行刷新
+      this.$refs.rank_wrapper.addEventListener(
+        "DOMSubtreeModified",
+        function () {
+          this.rank_wrapper.refresh();
+        },
+        false
+      );
     },
     // 跳转歌单页面
     toList(id) {
