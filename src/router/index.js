@@ -46,7 +46,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import("@/views/rank/RankView.vue"),
     meta: {
-      keepAlive: true, // 不需要缓存
+      keepAlive: false, // 不需要缓存
     },
   },
   {
