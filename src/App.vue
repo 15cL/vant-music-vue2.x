@@ -52,7 +52,13 @@ export default {
       return okUrl.indexOf(this.$route.path) == -1 ? false : true;
     },
   },
-  created() {},
+  watch: {
+    showPlayerFlag(n) {
+      if (n) {
+        this.$refs.play.play();
+      }
+    },
+  },
   methods: {
     onRefresh() {
       if (this.$route.path == "/user") {
