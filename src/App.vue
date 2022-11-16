@@ -17,7 +17,6 @@
       <audio
         ref="play"
         :src="playUrl"
-        autoplay
         @canplay="getDuration"
         @timeupdate="updateTimer"
         @ended="nextSong"
@@ -55,11 +54,35 @@ export default {
   watch: {
     showPlayerFlag(n) {
       if (n) {
-        this.$refs.play.play();
+        this.audioAutoPlay();
       }
     },
   },
   methods: {
+    // 适配移动端自动播放
+    audioAutoPlay() {
+      var audio = this.$refs.play,
+        play = function () {
+          audio.play();
+          document.removeEventListener("touchstart", play, false);
+        };
+      audio.play();
+      document.addEventListener(
+        "WeixinJSBridgeReady",
+        function () {
+          play();
+        },
+        false
+      );
+      document.addEventListener(
+        "YixinJSBridgeReady",
+        function () {
+          play();
+        },
+        false
+      );
+      document.addEventListener("touchstart", play, false);
+    },
     onRefresh() {
       if (this.$route.path == "/user") {
         let id = localStorage.getItem("UserId");
