@@ -284,7 +284,8 @@ export default {
       }
     }
     footer {
-      margin-top: 20rem;
+      position: fixed;
+      bottom: 2rem;
       padding: 1rem;
       .time_progress {
         display: flex;
