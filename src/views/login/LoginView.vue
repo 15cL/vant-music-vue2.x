@@ -44,17 +44,34 @@
               :type="text"
             >
             </van-field>
-            <van-button style="width: 10rem" @click="getYzm(username)"
+            <van-button
+              v-if="waitFlag"
+              style="width: 10rem"
+              @click="getYzm(username)"
               >发送验证码</van-button
+            >
+            <van-button v-else disabled style="width: 10rem"
+              >{{ num }} 秒</van-button
             >
           </div>
         </van-cell-group>
+        <div
+          v-if="msgYzm"
+          style="
+            text-align: right;
+            color: red;
+            font-size: 0.8rem;
+            margin-top: 0.8rem;
+          "
+        >
+          {{ msgYzm }}
+        </div>
         <div style="margin: 2rem">
           <van-button
             round
             block
             type="info"
-            @click="onSubmit(username, password)"
+            @click="onSubmit(username, password, Yzm)"
             >登录</van-button
           >
         </div>
@@ -69,6 +86,7 @@
 </template>
 
 <script>
+import md5 from "js-md5";
 import { mapActions } from "vuex";
 export default {
   data() {
@@ -77,6 +95,9 @@ export default {
       password: "",
       passwordStatus: false,
       fs_yzm: true,
+      waitFlag: true,
+      num: "",
+      msgYzm: "",
       phoneRule: [
         {
           // 是否必填
@@ -100,11 +121,16 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["user/login", "playlist/getJingPingList", "user/getYzm"]),
+    ...mapActions([
+      "user/login",
+      "playlist/getJingPingList",
+      "user/getYzm",
+      "user/checkYzm",
+    ]),
     backBtn() {
       this.$router.go(-1);
     },
-    async onSubmit(user, pwd) {
+    async onSubmit(user, pwd, Yzm) {
       const loading = this.$toast.loading({
         message: "加载中",
         forbidClick: true,
@@ -112,9 +138,31 @@ export default {
       });
       if (user || pwd) {
         try {
-          await this["user/login"]({ phone: user, password: pwd });
+          if (!this.fs_yzm) {
+            let checkRes = await this["user/checkYzm"]({
+              phone: user,
+              captcha: Yzm,
+            });
+            console.log(checkRes);
+            if (checkRes.data.data) {
+              await this["user/login"]({
+                phone: user,
+                captcha: Yzm,
+              });
+            }
+          } else {
+            await this["user/login"]({
+              phone: user,
+              md5_password: md5(pwd),
+            });
+          }
+
           this.$router.push("/");
         } catch (error) {
+          if (error.response.data.message) {
+            this.msgYzm = "验证码错误";
+            console.log(this.msgYzm);
+          }
           return;
         } finally {
           loading.clear();
@@ -122,7 +170,15 @@ export default {
       }
     },
     getYzm(phone) {
-      this["user/getYzm"](JSON.stringify(phone));
+      this["user/getYzm"](phone);
+      this.waitFlag = false;
+      this.num = 60;
+      setInterval(() => {
+        this.num = this.num - 1;
+        if (this.num <= -1) {
+          this.waitFlag = true;
+        }
+      }, 1000);
     },
   },
 };

@@ -1,5 +1,12 @@
 import { getToken, setToken, setTimeStamp, removeToken } from "@/utill/auth";
-import { login, logOut, getUserInfo, getPlayList, getYzm } from "@/api/user";
+import {
+  login,
+  logOut,
+  getUserInfo,
+  getPlayList,
+  getYzm,
+  checkYzm,
+} from "@/api/user";
 import { playlistClassify } from "@/utill/playlistClassify";
 
 const state = {
@@ -47,9 +54,16 @@ const actions = {
       context.commit("setId", id); //设置用户id
     }
   },
-  async getYzm(phone) {
+
+  // 获取验证码
+  async getYzm(context, phone) {
     return await getYzm(phone);
   },
+  // 验证验证码
+  async checkYzm(context, data) {
+    return await checkYzm(data);
+  },
+
   //登出
   async logOut(context) {
     await logOut();
