@@ -159,7 +159,7 @@ export default {
 
           this.$router.push("/");
         } catch (error) {
-          if (error.response.data.message) {
+          if (!this.fs_yzm) {
             this.msgYzm = "验证码错误";
             console.log(this.msgYzm);
           }

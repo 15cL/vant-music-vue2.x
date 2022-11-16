@@ -46,7 +46,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import("@/views/rank/RankView.vue"),
     meta: {
-      keepAlive: false, // 不需要缓存
+      keepAlive: true, // 不需要缓存
     },
   },
   {
@@ -78,6 +78,9 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import("@/views/listDetail/listDetail"),
+    meta: {
+      keepAlive: false, // 不需要缓存
+    },
   },
 ];
 
