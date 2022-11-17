@@ -25,6 +25,4 @@ module.exports = defineConfig({
     },
   },
   publicPath: "./",
-  //不生成map文件
-  productionSourceMap: false,
 });
