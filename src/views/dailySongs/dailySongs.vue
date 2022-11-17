@@ -12,8 +12,7 @@
     <BS_Scroll
       :click="true"
       :data="list"
-      ref="user_wrap"
-      class="wrapper"
+      class="bs_cont"
       :style="[
         { overflow: 'hidden' },
         {
@@ -70,7 +69,6 @@ export default {
       list: [],
       day: "",
       month: "",
-      user_wrap: "",
       tapFlag: null,
     };
   },
@@ -158,34 +156,38 @@ export default {
     align-items: center;
     background-color: aliceblue;
   }
-  header {
-    width: 100vw;
-    height: 6rem;
-    background-color: aliceblue;
-    padding: 5rem 0 0 1.5rem;
-  }
-  section {
-    ul {
-      li {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem;
+  .bs_cont {
+    header {
+      width: 100vw;
+      height: 6rem;
+      background-color: aliceblue;
+      padding: 5rem 0 0 1.5rem;
+    }
+    section {
+      padding-bottom: 2rem;
 
-        .zj_text {
-          width: 75vw;
+      ul {
+        li {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem;
 
-          h3,
-          h6 {
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-          }
-          .gray {
-            color: rgb(68, 64, 64);
-          }
-          .active {
-            color: red;
+          .zj_text {
+            width: 75vw;
+
+            h3,
+            h6 {
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+            }
+            .gray {
+              color: rgb(68, 64, 64);
+            }
+            .active {
+              color: red;
+            }
           }
         }
       }
