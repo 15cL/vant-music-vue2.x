@@ -76,6 +76,7 @@ export default {
         probeType: this.probeType,
         click: this.click,
         scrollX: this.scrollX,
+        stopPropagation: true,
       });
 
       // 是否派发滚动事件

@@ -98,6 +98,7 @@ export default {
       let id = ggg.data.result[Math.floor(Math.random(0, 100))].id;
 
       let list = await this.getAllPlaySong(id); //歌单所有歌曲
+      console.log(list);
       list.map((v, i) => {
         if (i < 30) {
           arr.push(v);
@@ -129,6 +130,7 @@ export default {
     // 获取歌单所有歌曲
     async getAllPlaySong(id) {
       let all = await this["playlist/getAllPlaySong"](id);
+      console.log(all);
       let currentlistSongIds = [];
       all.data.songs?.map((v) => {
         currentlistSongIds.push(v.id);

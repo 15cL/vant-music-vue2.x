@@ -2,7 +2,8 @@
   <BS_Scroll
     :data="list"
     :click="true"
-    :class="['cover_wrap', currentPlaySong.id ? 'has_Play' : 'no_play']"
+    :class="['cover_wrap', currentPlaySong.id ? 'has_play' : 'no_play']"
+    ref="bs_cover"
   >
     <div class="discover">
       <div class="banner">
@@ -107,7 +108,6 @@
           :click="true"
           :scrollX="true"
           class="new_section"
-          ref="user_wrap"
           v-else
         >
           <ul>
@@ -142,7 +142,6 @@ export default {
     return {
       banners: "",
       list: [],
-      user_wrap: null,
       icons: [],
       newSongs: [],
       new_titles: ["新歌", "新碟"],
@@ -170,6 +169,8 @@ export default {
   methods: {
     ...mapMutations(["play/setCurrentPlaySong"]),
     ...mapActions(["play/getSongDetail", "play/getPlayUrl"]),
+
+    // 播放
     async toPlay(id, song) {
       if (Array.isArray(song.ar)) {
         song.ar = SingerFormate(song.ar);
@@ -350,9 +351,9 @@ export default {
   }
 }
 .no_play {
-  height: calc(100vh - 8.5rem);
+  height: calc(100vh - 2.5rem);
 }
 .has_play {
-  height: calc(100vh - 11rem);
+  height: calc(100vh - 7.5rem);
 }
 </style>

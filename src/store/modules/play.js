@@ -10,6 +10,7 @@ const state = {
 const mutations = {
   // 切换播放页面flag
   switchPlayer(state) {
+    console.log("jjjj");
     state.showPlayerFlag = !state.showPlayerFlag;
   },
 
