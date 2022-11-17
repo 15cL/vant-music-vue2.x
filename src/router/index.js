@@ -31,6 +31,14 @@ const routes = [
     },
   },
   {
+    path: "/album",
+    name: "album",
+    component: () => import("@/views/albumDetail/albumDetail.vue"),
+    meta: {
+      keepAlive: false, // 不需要缓存
+    },
+  },
+  {
     path: "/dailySongs",
     name: "dailySongs",
     component: () => import("@/views/dailySongs/dailySongs.vue"),
@@ -51,7 +59,6 @@ const routes = [
   },
   {
     path: "/search",
-    name: "search",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -59,6 +66,22 @@ const routes = [
     meta: {
       keepAlive: true, // 需要缓存
     },
+    children: [
+      {
+        path: "/",
+        redirect: "/main",
+      },
+      {
+        path: "/main",
+        name: "main",
+        component: () => import("@/views/search/SearchMain/SearchMain.vue"),
+      },
+      {
+        path: "/result",
+        name: "result",
+        component: () => import("@/views/search/SearchRes/SearchRes.vue"),
+      },
+    ],
   },
   {
     path: "/login",

@@ -2,6 +2,7 @@ import {
   getPlayListDetail,
   getAllPlaySong,
   getJingPingList,
+  getPlayAlbumDetail,
 } from "@/api/playlist";
 const state = {};
 
@@ -20,8 +21,12 @@ const actions = {
 
   // 获取精品歌单
   async getJingPingList() {
-    let res = await getJingPingList();
-    return res;
+    return await getJingPingList();
+  },
+
+  // 获取专辑详情
+  async getPlayAlbumDetail(context, id) {
+    return await getPlayAlbumDetail(id);
   },
 };
 

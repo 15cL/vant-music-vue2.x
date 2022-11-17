@@ -6,12 +6,11 @@
         class="iconfont icon-xiangzuo"
         style="font-size: 1.1rem"
       ></span>
-      <span>歌单</span>
+      <span>专辑</span>
       <van-icon name="search" />
     </div>
-    <BS_Scroll
-      :click="true"
-      :data="allSong"
+    <div
+      ref="user_wrap"
       class="wrapper"
       :style="[
         { overflow: 'hidden' },
@@ -25,15 +24,15 @@
       <div class="content" ref="niu">
         <header>
           <div class="list_detail">
-            <img class="img_style" :src="listDetail.coverImgUrl" />
+            <img class="img_style" :src="albumDetail.picUrl" />
             <div class="detail_right">
-              <h3 class="list_title">{{ listDetail.name }}</h3>
+              <h3 class="list_title">{{ albumDetail?.name }}</h3>
               <h5 class="list_creator">
-                {{ listDetail.creator.nickname }}
+                {{ albumDetail?.artist.name }}
                 <van-icon name="arrow" />
               </h5>
               <h6 class="list_des">
-                {{ listDetail.description }}
+                {{ albumDetail.description }}
               </h6>
             </div>
           </div>
@@ -64,7 +63,7 @@
           </ul>
         </section>
       </div>
-    </BS_Scroll>
+    </div>
   </div>
 </template>
 
@@ -74,17 +73,16 @@ import { SingerFormate } from "@/utill/formate";
 export default {
   data() {
     return {
-      listDetail: {},
+      albumDetail: {},
       lists: [],
       allSong: [],
       tapFlag: null,
+      user_wrap: "",
     };
   },
   async created() {
-    let id = this.$route.query.listId;
-    this.getPlayListDetail(id); //获取歌单详情
-
-    let list = await this.getAllPlaySong(id); //歌单所有歌曲
+    let id = this.$route.query.albumId;
+    let list = await this.getPlayAlbumDetail(id); //获取专辑详情
     this.tapFlag = list.findIndex((v) => v.id == this.currentPlaySong.id); //定位当前播放歌曲
   },
   computed: {
@@ -97,7 +95,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      "playlist/getPlayListDetail",
+      "playlist/getPlayAlbumDetail",
       "playlist/getAllPlaySong",
       "play/getPlayUrl",
       "play/getSongDetail",
@@ -108,25 +106,13 @@ export default {
     },
 
     // 获取歌单详情
-    async getPlayListDetail(id) {
-      let res = await this["playlist/getPlayListDetail"](id);
-      this.listDetail = res.data.playlist;
-    },
-
-    // 获取歌单所有歌曲
-    async getAllPlaySong(id) {
-      let all = await this["playlist/getAllPlaySong"](id);
-      let currentlistSongIds = [];
-      all.data.songs?.map((v) => {
-        currentlistSongIds.push(v.id);
-      });
-      let res = await this["play/getSongDetail"](currentlistSongIds); //获取所有歌曲详情
-      res.data.songs?.map(
-        (v, i) => (res.data.songs[i].ar = SingerFormate(v.ar))
-      );
-      this["play/setCurrentPlayList"](res.data.songs); //存放当前播放歌单
-
+    async getPlayAlbumDetail(id) {
+      let res = await this["playlist/getPlayAlbumDetail"](id);
+      this.albumDetail = res.data.album;
       this.allSong = res.data.songs;
+      this.allSong.map((v) => {
+        v.ar = SingerFormate(v.ar);
+      });
       return res.data.songs;
     },
 
@@ -166,6 +152,7 @@ export default {
   }
   .wrapper {
     margin-top: -0.1rem;
+    overflow: hidden;
   }
   header {
     margin-top: -1px;

@@ -6,7 +6,8 @@ import store from "./store";
 import "@/assets/css/common/comm.scss";
 import "@/assets/icon/font.scss";
 import "@/utill/directives";
-
+import Scroll from "@/components/Bs_Scroll/BS_Scroll.vue";
+Vue.component("BS_Scroll", Scroll);
 Vue.config.productionTip = false;
 
 new Vue({

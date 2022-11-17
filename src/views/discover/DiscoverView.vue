@@ -34,9 +34,9 @@
     <div class="daily_list">
       <div class="title">
         <h2>推荐歌单</h2>
-        <span>更多<van-icon name="arrow" /></span>
+        <span @click="moreList">更多<van-icon name="arrow" /></span>
       </div>
-      <div class="content" ref="new_wrap">
+      <BS_Scroll :data="list" :click="true" :scrollX="true" class="content">
         <ul>
           <li v-for="ll in list" :key="ll.id" @click="toList(ll.id)">
             <div class="img_con">
@@ -45,7 +45,7 @@
             </div>
           </li>
         </ul>
-      </div>
+      </BS_Scroll>
     </div>
     <div class="newRec">
       <div class="new_title">
@@ -60,9 +60,17 @@
             >{{ title }}</span
           >
         </h2>
-        <span class="new_right">更多<van-icon name="arrow" /></span>
+        <span class="new_right" @click="moreList"
+          >更多<van-icon name="arrow"
+        /></span>
       </div>
-      <div class="new_section" ref="user_wrap" v-if="!newTag">
+      <BS_Scroll
+        :data="newSongs"
+        :click="true"
+        :scrollX="true"
+        class="new_section"
+        v-if="!newTag"
+      >
         <ul>
           <li
             v-for="song in newSongs"
@@ -85,10 +93,17 @@
             </div>
           </li>
         </ul>
-      </div>
-      <div class="new_section" ref="user_wrap" v-else>
+      </BS_Scroll>
+      <BS_Scroll
+        :data="newSongs"
+        :click="true"
+        :scrollX="true"
+        class="new_section"
+        ref="user_wrap"
+        v-else
+      >
         <ul>
-          <li v-for="die in newDies" :key="die.id" @click="toList(die.id)">
+          <li v-for="die in newDies" :key="die.id" @click="toAlbum(die.id)">
             <span>
               <img :src="die.picUrl" style="width: 4rem; border-radius: 1rem" />
             </span>
@@ -102,7 +117,7 @@
             </div>
           </li>
         </ul>
-      </div>
+      </BS_Scroll>
     </div>
   </div>
 </template>
@@ -116,7 +131,6 @@ export default {
       banners: "",
       list: [],
       user_wrap: null,
-      new_wrap: null,
       icons: [],
       newSongs: [],
       new_titles: ["新歌", "新碟"],
@@ -125,32 +139,18 @@ export default {
     };
   },
   async created() {
+    // 获取轮播图
     let res = await this.$store.dispatch("discover/getBanner");
     this.banners = res.data.banners;
-    let ooo = await this.$store.dispatch("discover/getRecommedList");
-    ooo.data.recommend.map((v, i) => {
-      if (i < 6) {
-        this.list.push(v);
-      }
-    });
-    this.$nextTick(() => {
-      this._initScroll();
-    });
-    let rrr = await this.$store.dispatch("discover/getNewSong", 0);
-    rrr.data.data.map((v, i) => {
-      if (i < 9) {
-        v.ar = SingerFormate(v.artists);
-        v.al = v.album;
-        this.newSongs.push(v);
-      }
-    });
-    let hhh = await this.$store.dispatch("discover/getNewDie", 9);
-    hhh.data.monthData.map((v, i) => {
-      if (i < 9) {
-        v.artists = SingerFormate(v.artists);
-        this.newDies.push(v);
-      }
-    });
+
+    // 获取推荐歌单
+    this.getRecList();
+
+    // 获取推荐新歌
+    this.getNewSong();
+
+    // 获取最新专辑
+    this.getNewAlbum();
   },
   methods: {
     ...mapMutations(["play/setCurrentPlaySong"]),
@@ -164,33 +164,55 @@ export default {
       this["play/getSongDetail"](id); //获取歌曲详情
       this.$store.commit("play/switchPlayer"); //开关
     },
+
+    // 获取推荐新歌
+    async getNewSong() {
+      let rrr = await this.$store.dispatch("discover/getNewSong", 9);
+      rrr.data.result.map((v) => {
+        v.song.ar = SingerFormate(v.song.artists);
+        v.song.al = v.song.album;
+        this.newSongs.push(v.song);
+      });
+    },
+
+    // 获取推荐歌单
+    async getRecList() {
+      let ooo = await this.$store.dispatch("discover/getRecommedList", 6);
+      ooo.data.result.map((v) => {
+        this.list.push(v);
+      });
+    },
+
+    // 获取最新专辑
+    async getNewAlbum() {
+      let hhh = await this.$store.dispatch("discover/getNewDie");
+      hhh.data.albums.map((v, i) => {
+        if (i < 9) {
+          v.artists = SingerFormate(v.artists);
+          this.newDies.push(v);
+        }
+      });
+    },
+    moreList() {
+      this.$toast("当前无更多");
+    },
     // 跳转推荐页面
     godaily() {
       this.$router.push("/dailySongs");
     },
-    _initScroll() {
-      if (!this.user_wrap) {
-        this.user_wrap = window.BScroll(this.$refs.user_wrap, {
-          click: true,
-          scrollX: true,
-          observeDOM: true,
-        });
-      } else {
-        this.user_wrap.refresh();
-      }
-      if (!this.new_wrap) {
-        this.new_wrap = window.BScroll(this.$refs.new_wrap, {
-          click: true,
-          scrollX: true,
-          observeDOM: true,
-        });
-      } else {
-        this.new_wrap.refresh();
-      }
-    },
     // 跳转歌单页面
     toList(id) {
-      this.$router.push({ name: "listDetail", query: { listId: id } });
+      this.$router.push({
+        name: "listDetail",
+        query: { listId: id },
+      });
+    },
+    // 跳转专辑页面
+    toAlbum(id) {
+      this.$router.push({
+        name: "album",
+        query: { albumId: id },
+      });
     },
     tapTo(index) {
       this.newTag = index;

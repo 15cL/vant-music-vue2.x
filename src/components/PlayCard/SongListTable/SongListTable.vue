@@ -45,7 +45,9 @@ export default {
     },
   },
   created() {
-    this.tapFlag = this.currentPlaySong.index;
+    this.tapFlag = this.currentPlayList.findIndex(
+      (v) => v.id == this.currentPlaySong.id
+    ); //定位当前播放歌曲
   },
   mounted() {
     setTimeout(() => {

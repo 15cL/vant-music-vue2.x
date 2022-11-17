@@ -143,7 +143,6 @@ export default {
               phone: user,
               captcha: Yzm,
             });
-            console.log(checkRes);
             if (checkRes.data.data) {
               await this["user/login"]({
                 phone: user,

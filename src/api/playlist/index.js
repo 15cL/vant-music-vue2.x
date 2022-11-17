@@ -7,7 +7,12 @@ export function getPlayListDetail(id) {
     method: "get",
   });
 }
-
+export function getPlayAlbumDetail(id) {
+  return request({
+    url: "/album?id=" + id,
+    method: "get",
+  });
+}
 // 获取歌单所有歌曲
 export function getAllPlaySong(id) {
   return request({

@@ -9,7 +9,9 @@
       <span>今日推荐</span>
       <van-icon name="search" />
     </div>
-    <div
+    <BS_Scroll
+      :click="true"
+      :data="list"
       ref="user_wrap"
       class="wrapper"
       :style="[
@@ -29,7 +31,7 @@
         <section>
           <ul>
             <li
-              v-for="(song, index) in list.dailySongs"
+              v-for="(song, index) in list"
               :key="song.id"
               @click="toPlay(song.id, song, index)"
             >
@@ -54,7 +56,7 @@
           </ul>
         </section>
       </div>
-    </div>
+    </BS_Scroll>
   </div>
 </template>
 
@@ -65,7 +67,7 @@ export default {
   name: "dailySongs",
   data() {
     return {
-      list: "",
+      list: [],
       day: "",
       month: "",
       user_wrap: "",
@@ -73,51 +75,73 @@ export default {
     };
   },
   async created() {
-    let ooo = await this.$store.dispatch("discover/getRecommedSong");
-    this.list = ooo.data.data;
-    this.list.dailySongs.map((v) => {
-      v.ar = SingerFormate(v.ar);
-    });
-    this.$nextTick(() => {
-      this._initScroll();
-    });
-    let time = new Date();
-    this.day = time.getDate();
-    this.month = time.getMonth() + 1;
-    this.tapFlag = this.list.dailySongs.findIndex(
-      (v) => v.id == this.currentPlaySong.id
-    ); //定位当前播放歌曲
+    // 获取歌单详情
+    this.list = await this.getDaily();
+
+    this.getTime();
+
+    this.tapFlag = this.list.findIndex((v) => v.id == this.currentPlaySong.id); //定位当前播放歌曲
   },
   computed: {
     ...mapGetters(["currentPlaySong"]),
   },
   methods: {
-    ...mapActions(["play/getSongDetail", "play/getPlayUrl"]),
-    ...mapMutations(["play/setCurrentPlaySong"]),
+    ...mapActions([
+      "play/getSongDetail",
+      "play/getPlayUrl",
+      "playlist/getAllPlaySong",
+      "play/getSongDetail",
+    ]),
+    ...mapMutations(["play/setCurrentPlaySong", "play/setCurrentPlayList"]),
+    // 获取歌单详情
+    async getDaily() {
+      let arr = [];
+      let ggg = await this.$store.dispatch("discover/getRecommedList", 100);
+      let id = ggg.data.result[Math.floor(Math.random(0, 100))].id;
+
+      let list = await this.getAllPlaySong(id); //歌单所有歌曲
+      list.map((v, i) => {
+        if (i < 30) {
+          arr.push(v);
+        }
+      });
+      return arr;
+    },
+
+    getTime() {
+      let time = new Date();
+      this.day = time.getDate();
+      this.month = time.getMonth() + 1;
+    },
+    // 返回
     backBtn() {
       this.$router.go(-1);
     },
-    _initScroll() {
-      if (!this.user_wrap) {
-        this.user_wrap = window.BScroll(this.$refs.user_wrap, {
-          click: true,
-          scrollY: true,
-          observeDOM: true,
-        });
-      } else {
-        this.user_wrap.refresh();
-      }
-    },
+
     // 跳转播放页面
     async toPlay(id, song, index) {
       await this["play/getPlayUrl"](id); //获取歌曲url
       this.tapFlag = index;
-      song.index = index;
-      // this.$router.push({ name: "songDetail", query: { songId: id } });
       this.$store.commit("play/switchPlayer"); //开关
 
       this["play/setCurrentPlaySong"](song); //存放当前song
       this["play/getSongDetail"](id); //获取歌曲详情
+    },
+
+    // 获取歌单所有歌曲
+    async getAllPlaySong(id) {
+      let all = await this["playlist/getAllPlaySong"](id);
+      let currentlistSongIds = [];
+      all.data.songs?.map((v) => {
+        currentlistSongIds.push(v.id);
+      });
+      let res = await this["play/getSongDetail"](currentlistSongIds); //获取所有歌曲详情
+      res.data.songs?.map(
+        (v, i) => (res.data.songs[i].ar = SingerFormate(v.ar))
+      );
+      this["play/setCurrentPlayList"](res.data.songs); //存放当前播放歌单
+
+      return res.data.songs;
     },
   },
 };

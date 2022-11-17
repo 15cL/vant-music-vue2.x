@@ -16,26 +16,26 @@ export function getRecommedSong() {
   });
 }
 
-// 获取每日推荐歌单
-export function getRecommedList() {
+// 获取推荐歌单
+export function getRecommedList(limit) {
   return request({
-    url: "/recommend/resource",
+    url: "/personalized?limit=" + limit,
     method: "get",
   });
 }
 
 // 获取新歌
-export function getNewSong(type) {
+export function getNewSong(limit) {
   return request({
-    url: "/top/song?type=" + type,
+    url: "/personalized/newsong?limit=" + limit,
     method: "get",
   });
 }
 
 // 获取新碟
-export function getNewDie(num) {
+export function getNewDie() {
   return request({
-    url: "/top/album?limit=" + num,
+    url: "/album/newest",
     method: "get",
   });
 }

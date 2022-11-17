@@ -17,14 +17,14 @@ const actions = {
   async getRecommedSong() {
     return await getRecommedSong();
   },
-  async getRecommedList() {
-    return await getRecommedList();
+  async getRecommedList(context, limit) {
+    return await getRecommedList(limit);
   },
-  async getNewSong(context, type) {
-    return await getNewSong(type);
+  async getNewSong(context, limit) {
+    return await getNewSong(limit);
   },
-  async getNewDie(context, num) {
-    return await getNewDie(num);
+  async getNewDie() {
+    return await getNewDie();
   },
 };
 

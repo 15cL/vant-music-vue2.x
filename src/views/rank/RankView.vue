@@ -1,6 +1,12 @@
 <template>
   <div class="rank_page">
-    <header ref="nav_wrapper">
+    <BS_Scroll
+      ref="nav_wrap"
+      class="nav_sec"
+      :data="navs"
+      :click="true"
+      :scrollX="true"
+    >
       <ul>
         <li
           :class="tapNum == index ? 'active' : ''"
@@ -11,8 +17,13 @@
           {{ nav }}
         </li>
       </ul>
-    </header>
-    <section ref="rank_wrapper">
+    </BS_Scroll>
+    <BS_Scroll
+      ref="rank_wrap"
+      :click="true"
+      :data="specialList"
+      :class="['rank_sec', currentPlaySong.id ? 'has_play' : 'no_play']"
+    >
       <div class="rank">
         <div class="guanfang" ref="nav_index0">
           <div class="title">
@@ -130,11 +141,12 @@
           </ul>
         </div>
       </div>
-    </section>
+    </BS_Scroll>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -148,6 +160,9 @@ export default {
       specialList: [],
       rank_wrapper: null,
     };
+  },
+  computed: {
+    ...mapGetters(["currentPlaySong"]),
   },
   async created() {
     let aaa = await this.$store.dispatch("rank/getTopRank");
@@ -166,40 +181,22 @@ export default {
         this.specialList.push(v);
       }
     });
-    this.$nextTick(() => {
-      this._initScroll();
-    });
   },
   methods: {
     imageLoad() {
-      this.rank_wrapper.refresh();
-    },
-    _initScroll() {
-      if (!this.nav_wrapper) {
-        this.nav_wrapper = window.BScroll(this.$refs.nav_wrapper, {
-          click: true,
-          scrollX: true,
-          observeDOM: true,
-        });
-      }
-      if (!this.rank_wrapper) {
-        this.rank_wrapper = window.BScroll(this.$refs.rank_wrapper, {
-          click: true,
-          scrollY: true,
-          observeDOM: true,
-        });
-        console.log(this.rank_wrapper);
-      }
+      this.$refs.rank_wrap.refresh();
     },
     // 跳转歌单页面
     toList(id) {
       this.$router.push({ name: "listDetail", query: { listId: id } });
     },
+
+    // 定位
     tapTo(index) {
       this.tapNum = index;
       let str = "nav_index" + index;
       let ref = this.$refs[str];
-      this.rank_wrapper.scrollToElement(ref, 1000); //定位当前播放音乐
+      this.$refs.rank_wrap.scrollToElement(ref, 1000); //定位
     },
   },
 };
@@ -207,7 +204,7 @@ export default {
 
 <style lang="scss" scoped>
 .rank_page {
-  header {
+  .nav_sec {
     width: 100vw;
     ul {
       display: flex;
@@ -221,12 +218,12 @@ export default {
       }
     }
   }
-  section {
-    height: calc(100vh - 8.5rem);
+  .rank_sec {
     overflow: hidden;
     padding: 1rem;
 
     .rank {
+      padding-bottom: 1rem;
       .guanfang {
         .title {
           font-size: 1.4rem;
@@ -290,6 +287,12 @@ export default {
         }
       }
     }
+  }
+  .no_play {
+    height: calc(100vh - 8.5rem);
+  }
+  .has_play {
+    height: calc(100vh - 11rem);
   }
 }
 </style>
