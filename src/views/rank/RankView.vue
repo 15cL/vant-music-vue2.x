@@ -289,7 +289,7 @@ export default {
     }
   }
   .no_play {
-    height: calc(100vh - 8.5rem);
+    height: calc(100vh - 5.9rem);
   }
   .has_play {
     height: calc(100vh - 11rem);
